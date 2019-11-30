@@ -1,0 +1,13 @@
+---
+version: 3
+
+services:
+  database:
+    image: 'mdillon/postgis'
+  web:
+    image: 'joepreludian/python-pipenv'
+    volumes:
+      - ./backend:/data
+    command: ./run.sh
+    ports:
+      - 8000:8000
