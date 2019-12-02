@@ -25,7 +25,7 @@ SECRET_KEY = 's+*xdo^^_o$$+f2!@f#ve*+v=%mc=z9#t78+=8=ue+!2ztflh0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'geoespacial.apps.GeoespacialConfig'
 ]
 
 MIDDLEWARE = [
@@ -75,11 +77,14 @@ WSGI_APPLICATION = 'latentes.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.environ.get('DB_NAME'),
+        'HOST': os.environ.get('DB_HOST'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PORT': 5432,
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
