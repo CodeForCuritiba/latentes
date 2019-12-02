@@ -1,13 +1,29 @@
 ---
-version: 3
+version: "3.7"
 
 services:
   database:
     image: 'mdillon/postgis'
+    environment:
+      POSTGRES_PASSWORD: 302010latentes
+      POSTGRES_DB: latentes
+      POSTGRES_USER: postgres
+    volumes:
+      - "db_data:/var/lib/postgresql/data"
   web:
-    image: 'joepreludian/python-pipenv'
+    build:
+      context: ./backend
+      docker_file: backend/Dockerfile
     volumes:
       - ./backend:/data
     command: ./run.sh
     ports:
       - 8000:8000
+    environment:
+      DB_HOST: database
+      DB_USER: postgres
+      DB_NAME: latentes
+      DB_PASSWORD: 302010latentes
+
+volumes:
+  db_data:
