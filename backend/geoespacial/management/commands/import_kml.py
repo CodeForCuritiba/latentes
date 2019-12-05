@@ -2,19 +2,35 @@
 # -*- coding: utf-8 -*-
 
 from django.core.management.base import BaseCommand, CommandError
+from fastkml import kml
 
 
 class Command(BaseCommand):
     help = 'Import KML Bases into app'
 
-    def add_arguments(self, parser):
-        parser.add_argument('files', nargs='+', type=str)
+    def load_comunidades_kilombolas(self):
+        
+        my_kml = kml.KML()
+
+        with open('latentes_data/Latentes - Comunidades quilombolas.kml', 'rb') as kml_file:
+            my_kml.from_string(kml_file.read())
+
+        list_descricao = []
+        for feature in my_kml.features():
+            for feat in feature.features():
+                extra_data_dict = {}
+                extra_data = feat.extended_data
+                for element in extra_data.elements:
+                    extra_data_dict.update({element.name: element.value})
+
+                print(extra_data_dict)
+                #feat.geometry
+
+                #import ipdb; ipdb.set_trace()
+                break
+                
 
     def handle(self, *args, **options):
-        for kml_file in options['files']:
-            try:
-                self.stdout.write(self.style.SUCCESS(f'OPENING FILE {kml_file}'))
-            except Poll.DoesNotExist:
-                raise CommandError('File does not exists')
+        self.load_comunidades_kilombolas()
 
-            self.stdout.write(self.style.SUCCESS('Done'))
+        self.stdout.write(self.style.SUCCESS('Done'))
