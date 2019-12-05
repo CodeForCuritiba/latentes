@@ -31,6 +31,10 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+
+    'base.apps.BaseConfig',
+
+    'django.contrib.gis',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'geoespacial.apps.GeoespacialConfig'
+    'geoespacial.apps.GeoespacialConfig',
+    'quilombola.apps.QuilombolaConfig',
 ]
 
 MIDDLEWARE = [
