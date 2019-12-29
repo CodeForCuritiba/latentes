@@ -6,8 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Downloading import data
-        run: make download_data
+      # - name: Downloading import data
+      # run: make download_data
       - name: Running Compose
         run: docker-compose up -d
       - name: Applying migrations
