@@ -1,3 +1,7 @@
 from django.contrib import admin
+from quilombola.models import Community
 
-# Register your models here.
+
+@admin.register(Community)
+class QuilombolaAdmin(admin.ModelAdmin):
+    list_display = ('name', 'area', 'family_no', 'city')

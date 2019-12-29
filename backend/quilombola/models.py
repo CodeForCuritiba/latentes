@@ -12,9 +12,9 @@ class Phase(models.Model):
 
 class Community(models.Model):
     name = models.CharField(verbose_name=_('name'), max_length=100)
-    area = models.DecimalField(verbose_name=_('area'), max_digits=4, decimal_places=4)
-    family_no = models.PositiveIntegerField(verbose_name=_('number of families'), default=0)
-    city = models.ForeignKey('base.City', related_name='communities', verbose_name=_('city'), on_delete=models.SET_NULL, null=True, blank=False)
+    area = models.DecimalField(verbose_name=_('area'), max_digits=19, decimal_places=8, blank=True, null=True)
+    family_no = models.PositiveIntegerField(verbose_name=_('number of families'), default=0, blank=True, null=True)
+    city = models.ForeignKey('base.City', related_name='communities', verbose_name=_('city'), on_delete=models.SET_NULL, null=True, blank=True)
 
     geometry = models.PolygonField(null=True, blank=False)
 
