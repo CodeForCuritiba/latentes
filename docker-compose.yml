@@ -13,7 +13,7 @@ services:
   web:
     build:
       context: ./backend
-      docker_file: backend/Dockerfile
+      dockerfile: backend/Dockerfile
     volumes:
       - ./backend:/data
     command: ./run.sh
