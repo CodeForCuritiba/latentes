@@ -1,0 +1,50 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-29 18:25+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: base/models.py:6
+msgid "initials"
+msgstr "sigla"
+
+#: base/models.py:13 quilombola/models.py:7 quilombola/models.py:14
+msgid "name"
+msgstr "nome"
+
+#: latentes/settings.py:123
+msgid "Brazilian Portuguese"
+msgstr "Português do Brasil"
+
+#: latentes/settings.py:124
+msgid "English"
+msgstr "Inglês"
+
+#: quilombola/models.py:6
+msgid "phase number"
+msgstr "número da fase"
+
+#: quilombola/models.py:15
+msgid "area"
+msgstr "área"
+
+#: quilombola/models.py:16
+msgid "number of families"
+msgstr "quantidade de famílias"
+
+#: quilombola/models.py:17
+msgid "city"
+msgstr "cidade"
