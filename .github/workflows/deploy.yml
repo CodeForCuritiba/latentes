@@ -11,4 +11,4 @@ jobs:
       - name: Running Compose
         run: docker-compose up -d
       - name: Applying migrations
-        run: docker-compose run web python manage.py migrate
+        run: sleep 60 && docker-compose run web python manage.py migrate
