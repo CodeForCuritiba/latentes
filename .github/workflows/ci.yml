@@ -33,7 +33,7 @@ jobs:
         run: |
           sudo apt-get -yqq install libpq-dev
           pip install --upgrade pip pipenv
-          pipenv install --system
+          pipenv install
           pipenv run python manage.py migrate
           pipenv run python manage.py test
 
