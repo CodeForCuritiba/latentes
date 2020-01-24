@@ -31,7 +31,7 @@ jobs:
           DB_NAME: latentes
           DB_PASSWORD: 302010latentes
         run: |
-          sudo apt-get -yqq install libpq-dev
+          sudo apt-get -yqq install libpq-dev gdal-bin libgeos-dev
           pip install --upgrade pip pipenv-to-requirements
           cd backend
           pipenv_to_requirements
