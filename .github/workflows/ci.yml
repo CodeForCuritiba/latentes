@@ -32,8 +32,10 @@ jobs:
           DB_PASSWORD: 302010latentes
         run: |
           sudo apt-get -yqq install libpq-dev
-          pip install --upgrade pip pipenv
-          pipenv install
-          pipenv run python manage.py migrate
-          pipenv run python manage.py test
+          pip install --upgrade pip pipenv-to-requirements
+          pipenv_to_requirements
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          python manage.py migrate
+          python manage.py test
 
