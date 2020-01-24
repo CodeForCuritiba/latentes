@@ -33,6 +33,7 @@ jobs:
         run: |
           sudo apt-get -yqq install libpq-dev
           pip install --upgrade pip pipenv-to-requirements
+          cd backend
           pipenv_to_requirements
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
