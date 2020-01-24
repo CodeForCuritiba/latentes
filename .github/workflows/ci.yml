@@ -1,0 +1,39 @@
+---
+name: Continuous Integration
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: mdillon/postgis
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_PASSWORD: 302010latentes
+          POSTGRES_DB: latentes
+          POSTGRES_USER: postgres
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
+      - name: Build and run tests
+        env:
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_NAME: latentes
+          DB_PASSWORD: 302010latentes
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          pip install --upgrade pip pipenv
+          pipenv install --system
+          pipenv run python manage.py migrate
+          pipenv run python manage.py test
+
