@@ -1,0 +1,92 @@
+---
+name: Linux Build
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  continuous-integration:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_PASSWORD: 302010latentes
+          POSTGRES_DB: latentes
+          POSTGRES_USER: postgres
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+          architecture: 'x64'
+      - name: Install Python Libs
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          pip install --upgrade pip pipenv-to-requirements
+          pipenv_to_requirements
+          pip install -r requirements.txt
+      - name: Build and run tests
+        env:
+          DB_HOST: localhost
+          DB_USER: postgres
+          DB_NAME: latentes
+          DB_PASSWORD: 302010latentes
+        run: |
+          python manage.py migrate
+          python manage.py collectstatic --no-input
+          python manage.py test
+      - name: Archive artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: wiproite-build
+          path: .
+  continuous-delivery:
+    runs-on: ubuntu-latest
+    needs: continuous-integration
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: wiproite-build
+          path: .
+      - name: Build project containers
+        run: |
+          docker build -t wiproite -f _devops/Dockerfile-django .
+          docker build -t nginx -f _devops/Dockerfile-nginx .
+      - name: Deploy docker image to Github Packages
+        env:
+          GH_PASSWD: ${{ secrets.GH_PASSWD }}
+        run: |
+          echo "$GH_PASSWD" | docker login docker.pkg.github.com --username joepreludian --password-stdin
+          echo "Deploy Wiproite Package"
+          docker tag wiproite docker.pkg.github.com/joepreludian/wiproite/wiproite:latest
+          docker push docker.pkg.github.com/joepreludian/wiproite/wiproite:latest
+          docker tag nginx docker.pkg.github.com/joepreludian/wiproite/nginx:latest
+          docker push docker.pkg.github.com/joepreludian/wiproite/nginx:latest
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: continuous-delivery
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: wiproite-build
+          path: .
+      - name: Deploy application to Production
+        run: |
+          cd _devops/wiproite
+          echo -ne "${{ secrets.RSA_KEY }}" > id_rsa && chmod 600 id_rsa
+          docker run --rm -i -v $(pwd):/app -w /app python:3.8 bash deploy_on_container.sh
