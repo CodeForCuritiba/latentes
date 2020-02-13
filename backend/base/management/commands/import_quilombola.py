@@ -6,7 +6,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from fastkml import kml
 
 from base.models import City, State
-from quilombola.models import Community
+from quilombola.models import Community, Phase
 
 
 class Command(BaseCommand):
@@ -40,11 +40,16 @@ class Command(BaseCommand):
                 else:
                     city = None
 
+                new_phase, created = Phase.objects.get_or_create(
+                    name=extra_data_dict['fase'],
+                    description=extra_data_dict['descrição']
+                )
+
                 new_community = Community()
                 new_community.name = str(extra_data_dict.get('nome', 'Sem nome')).lower().capitalize()
                 new_community.family_no = int(extra_data_dict['familias']) if extra_data_dict.get('familias') else None
                 new_community.city = city
-                
+                new_community.phase = new_phase 
                 area = extra_data_dict['area'] if extra_data_dict.get('area') else None
                 new_community.area = area
 
